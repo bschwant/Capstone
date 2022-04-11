@@ -26,6 +26,7 @@ This project involves detecting drones by listening for their sound characterist
 4. Implement Trained Model into Software Capable of Real-Time Detection
 
 ### 2.6 Pairwise Comparison Chart: Objectives
+![alt text](https://github.com/bschwant/Capstone/blob/main/images/pairwise.png)
 
 ### 2.7 Key Features
 1. Accurate Classification of Drones
@@ -58,7 +59,9 @@ R3: Software Reliability: Software should be able to run continuously with minim
 Each team member spent approximately 8 hours a week towards the project which includes group meetings and individual tasks. This time consisted of 2 hours per week dedicated to team meetings and 4-6 hours a week to complete individual tasks as well as group assignments.
 
 ### 3.1.1 Semester 1 Gantt Chart
+![alt text](https://github.com/bschwant/Capstone/blob/main/images/sem1gantt.png)
 ### 3.1.2 Semester 2 Gantt Chart
+![alt text](https://github.com/bschwant/Capstone/blob/main/images/sem2gantt.png)
 
 ### 3.2 Available Resources  
 Our team has a budget of $200 from Luddy. As our project has consisted of only software up until this point, we have not used any of the budget yet. We also had the expertise of our Mentor from NSWC Crane Ryan Dowd, and Professor Suha Lasassmeh to assist during our project.
@@ -80,10 +83,9 @@ Our team stored all project related documentation in a shared Google Drive. All 
 
 ## 5. Technical Design
 ### 5.1 Product Block Diagram
+![alt text](https://github.com/bschwant/Capstone/blob/main/images/block_diagram.png)
 
 ### 5.2 Block Ownership
-
-
 Block A: Dataset Creation - Ethan Japundza
 - Find/Create/Optimize dataset suitable for ML training.
 - Create simulated real time audio data.
@@ -178,6 +180,7 @@ While the goal is always to make software that is 100% reliable and will never f
 ## 9. Block A: Dataset Creation
 
 Figure 9.A: Block A 
+![alt text](https://github.com/bschwant/Capstone/blob/main/images/blockA.png)
 
 The main objective of Block A was the creation of a reliable data set of drone audio and the preprocessing of data to be used for machine learning training. This block is also responsible for the creation of data to simulate an audio input for real time sound classification.
 ### 9.1 Block Requirements
@@ -207,6 +210,7 @@ Due to the previously mentioned issues, in order to complete our project, our gr
 The dataset we ended up using contains indoor drone propeller noise recordings by Sara Al-Emadi and has also been artificially augmented with random noise clips. This dataset is part of  the 'Audio Based Drone Detection and Identification using Deep Learning’ research paper.[1] We used 16,000 audio clips in the training,validation, and testing of our machine learning model
 ### 9.6 Data Preprocessing
 The dataset mentioned previously contained audio clips recorded using standard microphones  and were audible frequencies and not infrasound. As a result, in order to create a dataset to train our infrasound machine learning model, we had to use sound processing techniques to extract the infrasound from these clips. Peak frequencies within the true drone audio from the dataset were roughly 8000 Hz. For our project we need to focus on the infrasound which are the frequencies between 0-20 Hz. To get the infrasound data from these audio clips accomplish this, we used Python to apply a low-pass filter to all of the audio clips and save them as new files to form a pseudo-infrasound database. It is important to note, this method is not ideal due to the fact the microphones used to record this data are not designed to record frequencies this low. As a result, after sound processing, we noticed lots of noise in our infrasound dataset; however, we felt this was the best option based on the data we did have available to us.  Below are examples of our data before and after our sound processing.
+![alt text](https://github.com/bschwant/Capstone/blob/main/images/filter.png)
 
 Before Applying Low-Pass Filter
 After Applying Low-Pass Filter
@@ -214,7 +218,7 @@ After Applying Low-Pass Filter
 Spectrograms are a visual representation of the spectrum of frequencies in a signal. The intensity of the frequencies in a signal are represented by color. The warmer colors (yellow), represent higher intensity at a given frequency while colder colors (blue) represent a lower intensity. From the spectrograms of one of our audio clips before applying a low pass filter, one can easily see the high intensity of the audio data at many frequencies between 0-8000 Hz. After applying the low pass filter to this same audio file, one can see how the intensity of our audio file is very high at low frequencies and very low for all higher frequencies. The original audio dataset was used for training our non-infrasound model and our new processed dataset was used for training our infrasound model.
 
 ## 10. Block B: M.L. Model Training
-
+![alt text](https://github.com/bschwant/Capstone/blob/main/images/blockB.png)
 Figure 10.A: Block B 
 
 The main purpose of Block B was the identification and training of a machine learning model capable of accurate real time detection of drones based on an audio input. 
@@ -263,6 +267,7 @@ When training machine learning models, the accuracy of the models can be diminis
 
 When training models, one can determine if a model becomes overfit throughout a given number of epochs when the accuracy of the model on the training data increases, while the accuracy of the model on the validation data does not improve or even gets worse. Below is an example of what overfitting looks in practice and is a plot of the accuracy loss and validation loss of a large number of epochs.
 
+![alt text](https://github.com/bschwant/Capstone/blob/main/images/acc.png)
 Figure 10.B: Accuracy Loss vs. Validation Loss
 
 In this example, overfitting begins to occur after roughly 10 epochs when validation loss plateaus and begins to increase while the accuracy loss continues to decrease.
@@ -274,7 +279,7 @@ One objective of our project was to make sure our model is as accurate and robus
 Our non-infrasound model trained over 10 epochs and achieved an accuracy of 98.3% and a validation accuracy of 97.5%. Our infrasound model also trained over 10 epochs and achieved an accuracy of 60.43% and a validation accuracy of 58.22%.
 
 ## 11. Block C: Real-Time Detection
-
+![alt text](https://github.com/bschwant/Capstone/blob/main/images/blockC.png)
 Figure 11.A: Block C 
 
 The main objective of Block C was the implementation of the trained machine learning model created in Block B into a function capable of real time detection. The output of this block is a prediction for every chunk of data determining if a drone is present or not.
@@ -309,7 +314,7 @@ When testing the accuracy of our real-time detection functionality we first used
 In this testing we achieved accuracies around 90%. 
 
 ## 12. Block D: Model Retraining 
-
+![alt text](https://github.com/bschwant/Capstone/blob/main/images/BlockD.png)
 Figure 12.A: Block D 
 
 
@@ -347,7 +352,7 @@ There are no environmental requirements associated with this block.
 This block accepts a path to a directory containing two labeled subdirectories and a new name. The model training function maintains the same model design and training characteristics mentioned previously in Block B. A new model can be trained on any dataset the user would like by accepting a path input. The directory containing the new dataset must contain two labeled subdirectories as labels for training are generated based on the names of their respective subdirectories. The newly trained models are saved into a model directory automatically with a name provided by the user.
 
 ## 13. Block E: User Interface
-
+![alt text](https://github.com/bschwant/Capstone/blob/main/images/BlockE.png)
 Figure 13.A: Block E 
 
 This main objective of Block E was the combination of all previously mentioned functionality from our project. Block E is also responsible for ensuring users are easily able to interact with and control the functionality of our program.
@@ -355,25 +360,17 @@ This main objective of Block E was the combination of all previously mentioned f
 For the user interface of our program, our minimum objective given to us by our client was a command line interface, as they are familiar with that structure and because this is not a commercial project that needs to be simple to use for everyone. However, we wanted to add the ability to control our program using a simple GUI to better serve our clients.
 
 ### 13.1 Block Requirements
-Req #
-Requirement
-Description
-E1
-Complete
+
+E1 - Complete
 This block must combine all functionality of project
-E2
-User Friendly
+E2 - User Friendly
 The user must be able to easily interact with our program
 
 ### 13.2 Input/Output Summary 
-Type
-Description
-Notes
-Input 
-Command Line Arguments
+
+Input - Command Line Arguments
 Command line arguments can be used to initiate all functionality associated with our project.
-Input
-GUI Inputs
+Input - GUI Inputs
 When our program is run in GUI mode, there can be inputs for model retraining.
 
 ### 13.3 Cost Requirements 
@@ -384,7 +381,7 @@ There are no environmental requirements associated with this block.
 This block is where we combined all functionality from our project into a single Python program that can be controlled by running it one of two modes - using command line arguments or a graphical user interface. The graphical user interface is the default running mode to simplify use for users not familiar with command line arguments. Running the program with both command line arguments or the GUI allow for the same functionality. The different functions that our program can handle are further explained in the following sections.
 
 ### 13.6 Software Flow Chart
-
+![alt text](https://github.com/bschwant/Capstone/blob/main/images/flow.png)
 Figure 13.B: Software Flow Chart 
 When running our program, the user can control it in one of two ways - a graphical user interface or command line arguments. To run our program with a graphical user interface, the user would run our program with no arguments and the GUI would launch automatically. The program would then be controlled using the GUI. If the user chooses to use command line arguments, the program can be run with an argument to launch one of two modes - one for real-time detection or one for model retraining. An argument must also be passed to specify the type of sound the mode is to be run on: infrasound or non-infrasound.
 ### 13.7 Infrasound vs. Non-Infrasound
@@ -396,6 +393,7 @@ When running our program, the user will be able to choose between the two sound 
 ### 13.8 Command Line Arguments 
 When running our program using command line arguments, the following arguments are available showing in [Fig. 13.C].
 
+![alt text](https://github.com/bschwant/Capstone/blob/main/images/args.png)
 Figure 13.C: Available Command Line Arguments
 Below are example commands that could be used to run our program:
 Model Training (Normal)
@@ -412,31 +410,30 @@ $ python drone_detection.py -i -d "infrasound_RealTime_Default"
 
 
 ### 13.9 Graphical User Interface
-
+![alt text](https://github.com/bschwant/Capstone/blob/main/images/gui.png)
 Figure 13.D: Graphical User Interface
 
 Above in [Fig. 13.D] is what our GUI looks like once launched. Our GUI is broken down into three sections: Real Time Detection, Model Retraining, and Detection Logs. In the bottom left of the GUI is a button to pull up a help menu with instructions on how to control and use our program shown below in [Fig 13.D.2].
 
+![alt text](https://github.com/bschwant/Capstone/blob/main/images/menu.png)
 Figure 13.D.2: Help Menu
 #### 13.9.1 Real Time Detection Mode
 
+![alt text](https://github.com/bschwant/Capstone/blob/main/images/real_time.png)
 Figure 13.E: Real-Time Detection Section
-
-
-
 Figure 13.F: Real-Time Running In Terminal 
 
 Above shown in [Fig. 13.E]  is the real-time detection section, this contains a list of all models that have been trained previously contained in our model directory. All models are saved with the sound type it was trained for to allow users to easily tell the difference between infrasound and normal models. When the user would like to start real-time detection for a given model, they can simply select the model they would like to use and real-time detection will automatically start. If the user would like to watch for detections in real-time, that is shown in the termina. The image [Fig 13.F] shows what the terminal window looks like when running real-time detection mode is running. When drones are detected, alerts are printed to the terminal and an event is added to a logging file with the time of detection.
 #### 13.9.2 Model Retraining Mode
-   
+  
+![alt text](https://github.com/bschwant/Capstone/blob/main/images/retrain.png)
 Figure 13.G: Model Training Example
 
 The image shown above in [Fig 13.G] shows an example of the inputs used to train a new model. The user must provide a path to the dataset and a name for the model to be saved as. When model training is finished, there is a pop-up window in the GUI notifying the user that training is complete. Refreshing the models list in the real-time detection section will show the newly trained model which can then be used to launch a real-time detection session.
 
 #### 13.9.3 Detections Logs
-
+![alt text](https://github.com/bschwant/Capstone/blob/main/images/logs.png)
 Figure 13.G: Detection Logs Section
-
 Figure 13.H: Example Detection Log 
 
 Above shown in [Fig. 13.G] is the detection logs section, this contains a list of all of the detections created during previous real-time detection sections. Each time a real-time detection section is launched, a new log file is created and the name is the date and time the session started as well as the sound type. The image in [Fig 13.H] shows the formatting and output included in an example log. Each time a drone is detected a new log event is added with the time of the detection. 
